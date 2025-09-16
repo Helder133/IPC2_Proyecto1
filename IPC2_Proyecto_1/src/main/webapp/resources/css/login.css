@@ -1,0 +1,49 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 15/09/2025, 23:59:14
+    Author     : helder
+*/
+
+/* Fondo general */
+body {
+    background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Contenedor de login */
+.login-card {
+    background-color: #2b2f32;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    color: #f8f9fa;
+}
+
+/* Botón principal */
+.btn-login {
+    background-color: #0d6efd;
+    border: none;
+    color: #fff;
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+    background-color: #0a58ca;
+}
+
+/* Labels */
+.form-label {
+    color: #e9ecef; 
+}
