@@ -10,16 +10,14 @@
     <head>
         <meta charset="UTF-8">
         <title>Inicio de Sesión</title>
-        <!-- Bootstrap -->
         <jsp:include page="/includes/resources.jsp"/>
-        <!-- Estilos personalizados -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css" />
     </head>
     <body>
         <main>
             <div class="login-card">
                 <h4 class="text-center mb-4">Inicio de Sesión</h4>
-                <form method="post" action="LoginServlet">
+                <form method="POST" >
                     <div class="mb-3">
                         <label for="User" class="form-label">Documento de Identificación</label>
                         <input type="text" class="form-control" id="User" name="user" placeholder="DPI o Pasaporte" required>
@@ -29,6 +27,10 @@
                         <input type="password" class="form-control" id="Password" name="password" placeholder="Ingrese su contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-login w-100">Ingresar</button>
+
+                    <div class="text-center mt-3 small text-muted">
+                        ¿No estas registrado? <a href="nuevoUsuario/nuevoUsuario.jsp" class="link-light">Registrate</a>
+                    </div>
                 </form>
             </div>
         </main>

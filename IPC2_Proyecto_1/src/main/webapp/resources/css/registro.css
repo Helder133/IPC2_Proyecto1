@@ -3,24 +3,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : 15/09/2025, 23:59:14
+    Created on : 16/09/2025, 12:55:11
     Author     : helder
 */
 
-/* Contenedor de login */
-.login-card {
+/* Contenedor de registro */
+.register-card {
     background-color: #2b2f32;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.6);
     padding: 2rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     color: #f8f9fa;
 }
 
-/* Botón principal */
-.btn-login {
-    background-color: #0d6efd;
+/* Botón de registro */
+.btn-register {
+    background-color: #198754; /* verde Bootstrap */
     border: none;
     color: #fff;
     font-weight: 500;
@@ -29,11 +29,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     transition: background-color 0.3s ease-in-out;
 }
 
-.btn-login:hover {
-    background-color: #0a58ca;
+.btn-register:hover {
+    background-color: #157347;
 }
 
 /* Labels */
 .form-label {
-    color: #e9ecef; 
+    color: #e9ecef;
 }
+
