@@ -17,19 +17,19 @@
         <main>
             <div class="login-card">
                 <h4 class="text-center mb-4">Inicio de Sesión</h4>
-                <form method="POST" >
+                <form method="POST" action="${pageContext.servletContext.contextPath}/ControllerLogin" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="User" class="form-label">Documento de Identificación</label>
-                        <input type="text" class="form-control" id="User" name="user" placeholder="DPI o Pasaporte" required>
+                        <input type="text" class="form-control" id="Usuario" name="Usuario" placeholder="DPI o Pasaporte" required>
                     </div>
                     <div class="mb-3">
                         <label for="Password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="Password" name="password" placeholder="Ingrese su contraseña" required>
+                        <input type="password" class="form-control" id="Contraseña" name="Contraseña" placeholder="Ingrese su contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-login w-100">Ingresar</button>
 
                     <div class="text-center mt-3 small text-muted">
-                        ¿No estas registrado? <a href="nuevoUsuario/nuevoUsuario.jsp" class="link-light">Registrate</a>
+                        ¿No estas registrado? <a href="${pageContext.request.contextPath}/nuevoUsuario/nuevoUsuario.jsp" class="link-light">Registrate</a>
                     </div>
                 </form>
             </div>

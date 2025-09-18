@@ -1,8 +1,9 @@
 <%-- 
-    Document   : usuario-creado
-    Created on : 17/09/2025, 00:01:48
+    Document   : loginGenerico
+    Created on : 17/09/2025, 22:49:56
     Author     : helder
 --%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="backend.modelos.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,8 +27,8 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title">${usuario.nombre}</h5>
                                     <p class="card-text">
-                                        ✅ Registro exitoso. Tu usuario para ingresar es:
-                                        <span class="fw-bold text-info">${usuario.DPI_o_Pasaporte}</span>
+                                        Inicio de sesion exitosamente:
+                                        <span class="fw-bold text-info">${usuario.rol}</span>
                                     </p>
                                     <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-warning w-100">
                                         <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
@@ -45,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <a href="${pageContext.request.contextPath}/nuevoUsuario/nuevoUsuario.jsp"
+                                    <a href="${pageContext.request.contextPath}/index.jsp"
                                        class="btn btn-warning w-100">
                                         <i class="bi bi-arrow-left-circle"></i> Regresar
                                     </a>

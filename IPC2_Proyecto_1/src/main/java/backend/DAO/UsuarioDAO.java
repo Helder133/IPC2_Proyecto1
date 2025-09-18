@@ -5,7 +5,6 @@
 package backend.DAO;
 
 import backend.db.DBConnections;
-import backend.exceptions.IcompletoException;
 import backend.exceptions.ObjetoExistenteException;
 import backend.modelos.Usuario;
 import java.sql.Connection;
@@ -20,11 +19,16 @@ import java.sql.SQLException;
 public class UsuarioDAO implements CRUD<Usuario> {
 
     private static final String ENCONTRAR_USUARIO_POR_CODIGO_QUERY = "select * from Usuario where DPI_o_Pasaporte = ?";
-    private static final String INSETAR_USUARIO = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña) values (?,?,?,?);";
+    private static final String ENCONTRAR_USUARIO_POR_EMAIL_QUERY = "select * from Usuario where Email = ?";
+    private static final String INSETAR_USUARIO = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña) values (?,?,?,?,?,?,?);";
+    private static final String ENCONTRAR_USUARIO_LOGIN = "select * from Usuario where DPI_o_Pasaporte = ? and Contraseña = ?";
+
     @Override
     public Usuario insetar(Usuario t) throws SQLException, ObjetoExistenteException {
         if (existeUsuario(t)) {
             throw new ObjetoExistenteException(String.format("El Usuario '%s' con documento '%s' ya existe", t.getNombre(), t.getDPI_o_Pasaporte()));
+        } else if (existeCorreo(t)) {
+            throw new ObjetoExistenteException(String.format("El correo '%s' ya existe", t.getEmail()));
         }
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(INSETAR_USUARIO);) {
@@ -48,6 +52,41 @@ public class UsuarioDAO implements CRUD<Usuario> {
             query.setString(1, usuario.getDPI_o_Pasaporte());
             ResultSet result = query.executeQuery();
             return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    private boolean existeCorreo(Usuario usuario) throws SQLException {
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_EMAIL_QUERY)) {
+            query.setString(1, usuario.getEmail());
+            ResultSet result = query.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public Usuario extraerUsuarioRegistradoLogin(Usuario usuario) throws SQLException, ObjetoExistenteException{
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_LOGIN)) {
+            query.setString(1, usuario.getDPI_o_Pasaporte());
+            query.setString(2, usuario.getContraseña());
+            ResultSet result = query.executeQuery();
+            if (result.next()) {
+                usuario.setNombre(result.getString("Nombre"));
+                usuario.setFoto(result.getString("Foto"));
+                usuario.setTelefono(result.getString("Telefono"));
+                usuario.setOrganizacion(result.getString("Organizacion"));
+                usuario.setEmail(result.getString("Email"));
+                usuario.setContraseña("");
+                usuario.setEstado(result.getBoolean("Estado"));
+                usuario.setRol(result.getString("Rol"));
+                return usuario;
+            } else {
+                throw new ObjetoExistenteException("Usuario o contraseña incorrecta, vuelva a intentar");
+            }
         } catch (SQLException e) {
             throw new SQLException(e);
         }

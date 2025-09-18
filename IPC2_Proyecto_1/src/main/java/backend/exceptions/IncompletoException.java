@@ -8,11 +8,11 @@ package backend.exceptions;
  *
  * @author helder
  */
-public class IcompletoException extends Exception {
-    public IcompletoException() {
+public class IncompletoException extends Exception {
+    public IncompletoException() {
     }
 
-    public IcompletoException(String message) {
+    public IncompletoException(String message) {
         super(message);
     }
 }

@@ -13,15 +13,15 @@ import org.apache.commons.lang3.StringUtils;
  * @author helder
  */
 public class Usuario {
-    private final String DPI_o_Pasaporte;
-    private final String foto;
-    private final String nombre;
-    private final String telefono;
-    private final String organizacion;
-    private final String email;
-    private final String contraseña;
+    private String DPI_o_Pasaporte;
+    private String foto;
+    private String nombre;
+    private String telefono;
+    private String organizacion;
+    private String email;
+    private String contraseña;
     private Boolean estado;
-    private final String rol;
+    private String rol;
 
     public Usuario(String DPI_o_Pasaporte, String foto, String nombre, String telefono, String organizacion, String email, String contraseña) {
         this.DPI_o_Pasaporte = DPI_o_Pasaporte;
@@ -89,4 +89,37 @@ public class Usuario {
         byte[] message = contraseña.getBytes(StandardCharsets.UTF_8);
         return Base64.getEncoder().encodeToString(message);
     }
+
+    public void setDPI_o_Pasaporte(String DPI_o_Pasaporte) {
+        this.DPI_o_Pasaporte = DPI_o_Pasaporte;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setOrganizacion(String organizacion) {
+        this.organizacion = organizacion;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
 }

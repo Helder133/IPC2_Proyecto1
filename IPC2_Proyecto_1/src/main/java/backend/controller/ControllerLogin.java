@@ -11,6 +11,7 @@ import backend.exceptions.ObjetoExistenteException;
 import backend.modelos.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,26 +25,34 @@ import java.sql.SQLException;
  * @author helder
  */
 @MultipartConfig
-@WebServlet(name = "ControllerUsuario", urlPatterns = {"/ControllerUsuario"})
-public class ControllerUsuario extends HttpServlet {
+@WebServlet(name = "ControllerLogin", urlPatterns = {"/ControllerLogin"})
+public class ControllerLogin extends HttpServlet {
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ExtraccionDeDatos extraccion = new ExtraccionDeDatos();
-            Usuario usuario = extraccion.extraerUsuarioFormulario(request);
+            ExtraccionDeDatos extracion = new ExtraccionDeDatos();
+            Usuario usuario = extracion.extraerDatosLogin(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.insetar(usuario);
+            usuarioDAO.extraerUsuarioRegistradoLogin(usuario);
             request.setAttribute("usuario", usuario);
-
-        } catch (IncompletoException | ObjetoExistenteException | SQLException | IOException e) {
+        } catch (IncompletoException | ObjetoExistenteException | SQLException e) {
             request.setAttribute("error", e.getMessage());
         }
-
+        
         RequestDispatcher dispatcher = getServletContext()
-                .getRequestDispatcher("/nuevoUsuario/usuario-creado.jsp");
+                .getRequestDispatcher("/login/loginGenerico.jsp");
         dispatcher.forward(request, response);
+
     }
 
     /**
