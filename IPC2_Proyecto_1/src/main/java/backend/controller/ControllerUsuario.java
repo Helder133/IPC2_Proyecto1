@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.Collections;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -46,14 +48,48 @@ public class ControllerUsuario extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        if (obtenerTodos(request)) {
+            try {
+                request.setAttribute("usuarios", usuarioDAO.seleccionar());
+            } catch (SQLException ex) {
+                request.setAttribute("error", ex.getMessage());
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher("/error/error.jsp");
+                dispatcher.forward(request, response);
+            }
+
+            RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/login/Administrador Sistema/usuario.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            // busco el evento por codigo y redirijo a la vista
+            try {
+                System.out.println(request.getParameter("id"));
+                Usuario usuario = usuarioDAO.seleccionarPorParametro(request.getParameter("id"));
+                if (usuario != null) {
+                    request.setAttribute("usuarios", Collections.singletonList(usuario));
+                } else {
+                    request.setAttribute("usuarios", usuario);
+                }
+            } catch (SQLException e) {
+                request.setAttribute("error", e.getMessage());
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher("/error/error.jsp");
+                dispatcher.forward(request, response);
+            }
+
+            RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/login/Administrador Sistema/usuario.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
+    private boolean obtenerTodos(HttpServletRequest request) {
+        return StringUtils.isBlank(request.getParameter("id"));
+    }
 
 }

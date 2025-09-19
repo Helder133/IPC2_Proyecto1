@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,7 +24,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
     private static final String ENCONTRAR_USUARIO_POR_EMAIL_QUERY = "select * from Usuario where Email = ?";
     private static final String INSETAR_USUARIO = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña) values (?,?,?,?,?,?,?);";
     private static final String ENCONTRAR_USUARIO_LOGIN = "select * from Usuario where DPI_o_Pasaporte = ? and Contraseña = ?";
-
+    private static final String SELECCIONAR_TODOS_LOS_USUARIOS = "select * from Usuario";
     @Override
     public Usuario insetar(Usuario t) throws SQLException, ObjetoExistenteException {
         if (existeUsuario(t)) {
@@ -68,7 +70,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
         }
     }
 
-    public Usuario extraerUsuarioRegistradoLogin(Usuario usuario) throws SQLException, ObjetoExistenteException{
+    public Usuario extraerUsuarioRegistradoLogin(Usuario usuario) throws SQLException, ObjetoExistenteException {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_LOGIN)) {
             query.setString(1, usuario.getDPI_o_Pasaporte());
@@ -93,8 +95,28 @@ public class UsuarioDAO implements CRUD<Usuario> {
     }
 
     @Override
-    public Usuario[] seleccionar() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Usuario> seleccionar() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(SELECCIONAR_TODOS_LOS_USUARIOS);) {
+            ResultSet result = query.executeQuery();
+            while (result.next()) {
+                Usuario usuario = new Usuario(
+                        result.getString("DPI_o_Pasaporte"),
+                        result.getString("Foto"),
+                        result.getString("Nombre"),
+                        result.getString("Telefono"),
+                        result.getString("Organizacion"),
+                        result.getString("Email"),
+                        "");//contraseña
+                usuario.setEstado(result.getBoolean("Estado"));
+                usuario.setRol(result.getString("Rol"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return usuarios;
     }
 
     @Override
@@ -109,7 +131,27 @@ public class UsuarioDAO implements CRUD<Usuario> {
 
     @Override
     public Usuario seleccionarPorParametro(String t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_CODIGO_QUERY)) {
+            query.setString(1, t);
+            ResultSet result = query.executeQuery();
+            if (result.next()) {
+                Usuario usuario = new Usuario(
+                        result.getString("DPI_o_Pasaporte"),
+                        result.getString("Foto"),
+                        result.getString("Nombre"),
+                        result.getString("Telefono"),
+                        result.getString("Organizacion"),
+                        result.getString("Email"),
+                        "");
+                usuario.setEstado(result.getBoolean("Estado"));
+                usuario.setRol(result.getString("Rol"));
+                return usuario;
+            } 
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return null;
     }
 
     @Override

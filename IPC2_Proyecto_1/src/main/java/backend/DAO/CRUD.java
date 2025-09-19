@@ -6,6 +6,7 @@ package backend.DAO;
 
 import backend.exceptions.ObjetoExistenteException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.sql.SQLException;
  */
 public interface CRUD <T> {
     T insetar (T t) throws SQLException,ObjetoExistenteException;
-    T[] seleccionar () throws SQLException;
+    List<T> seleccionar () throws SQLException;
     void actualiza (T t) throws SQLException;
     void eliminar (T t) throws SQLException;
     T seleccionarPorParametro (String t) throws SQLException;

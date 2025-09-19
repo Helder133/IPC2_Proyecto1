@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS Usuario (
 	Rol ENUM('Administrador Sistema', 'Administrador Congreso', 'Participante', 'Comité Científico', 'Participante Invitado') NOT NULL DEFAULT 'Participante'
 );
 
+insert into Usuario (DPI_o_Pasaporte, Nombre, Telefono, Organizacion, Email, Contraseña, Estado, rol) 
+values ('0000', 'AdminSistema', '12345678', 'Admin', 'admin@gmail.com', 'YWRtaW4xMjM=', 1, 'Administrador Sistema');
+
 CREATE TABLE IF NOT EXISTS Cartera_Digital (
 	Id_Usuario VARCHAR(20) NOT NULL,
 	Monto DECIMAL(10,2) NOT NULL DEFAULT 0,
