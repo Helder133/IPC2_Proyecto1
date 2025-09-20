@@ -40,6 +40,7 @@ public class ControllerLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            System.out.println("Hola desde login");
             ExtraccionDeDatos extracion = new ExtraccionDeDatos();
             Usuario usuario = extracion.extraerDatosLogin(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();

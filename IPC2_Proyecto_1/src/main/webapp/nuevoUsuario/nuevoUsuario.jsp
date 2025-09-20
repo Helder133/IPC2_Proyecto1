@@ -13,10 +13,10 @@
         <jsp:include page="/includes/resources.jsp"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/registro.css" />
     </head>
-    <body>
-        <main>
+    <body class="bg-dark text-light">
+        <div class="centered-form">
             <div class="register-card">
-                <h4 class="text-center mb-4">Registro de Usuario</h4>
+                <h4 class="text-center mb-4 text-white">Registro de Usuario</h4>
                 <form method="post" action="${pageContext.servletContext.contextPath}/ControllerUsuario" enctype="multipart/form-data">
 
                     <!-- DPI / Pasaporte -->
@@ -48,27 +48,27 @@
                         <label for="organizacion" class="form-label">Organización</label>
                         <input type="text" class="form-control" id="organizacion" name="organizacion" placeholder="Empresa/Universidad" required>
                     </div>
-                    
+
                     <!-- Email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Correo electronico</label>
+                        <label for="email" class="form-label">Correo electrónico</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required>
                     </div>
 
                     <!-- Contraseña -->
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
+                        <label for="contraseña" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Mínimo 8 caracteres" required>
                     </div>
 
                     <!-- Botón -->
-                    <button type="submit" class="btn btn-register w-100">Registrarse</button>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mt-3">Registrarse</button>
                 </form>
 
-                <div class="text-center mt-3 small text-muted">
-                    ¿Ya tienes cuenta? <a href="${pageContext.request.contextPath}/index.jsp" class="link-light">Inicia sesión</a>
+                <div class="text-center mt-3 small text-light">
+                    ¿Ya tienes cuenta? <a href="${pageContext.request.contextPath}/index.jsp" class="text-info text-decoration-none">Inicia sesión</a>
                 </div>
             </div>
-        </main>
+        </div>
     </body>
 </html>

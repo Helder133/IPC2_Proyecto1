@@ -11,12 +11,14 @@ import java.util.List;
 /**
  *
  * @author helder
+ * @param <T>
  */
 public interface CRUD <T> {
-    T insetar (T t) throws SQLException,ObjetoExistenteException;
+    void insetar (T t) throws SQLException,ObjetoExistenteException;
     List<T> seleccionar () throws SQLException;
     void actualiza (T t) throws SQLException;
     void eliminar (T t) throws SQLException;
-    T seleccionarPorParametro (String t) throws SQLException;
+    List<T> seleccionarPorParametro (String t) throws SQLException;
     T seleccionarPorParametro (int t) throws SQLException;
+    void insertPorAdmin (T t) throws SQLException, ObjetoExistenteException;
 }

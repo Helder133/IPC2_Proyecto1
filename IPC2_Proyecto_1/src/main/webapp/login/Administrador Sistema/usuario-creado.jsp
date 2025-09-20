@@ -24,13 +24,16 @@
                                     <i class="bi bi-check-circle-fill me-2"></i>Usuario registrado: ${usuario.DPI_o_Pasaporte}
                                 </div>
                                 <div class="card-body text-center p-4">
-                                    <h5 class="card-title mb-3">${usuario.nombre}</h5>
+                                    <h5 class="card-title mb-3">Registro exitoso</h5>
                                     <p class="card-text mb-4">
-                                        Registro exitoso. Tu usuario para ingresar es:
-                                        <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.DPI_o_Pasaporte}</span>
+                                        Usuario con nombre:
+                                        <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.nombre}</span>
+                                        Con ro:
+                                        <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.rol}</span>
+                                        registrado exitodamente
                                     </p>
-                                    <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-warning w-100 py-2">
-                                        <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+                                    <a href="${pageContext.request.contextPath}/ControllerUsuario" class="btn btn-warning w-100 py-2">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i> Regresar
                                     </a>
                                 </div>
                             </div>
@@ -45,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <a href="${pageContext.request.contextPath}/nuevoUsuario/nuevoUsuario.jsp"
+                                    <a href="${pageContext.request.contextPath}/ControllerUsuario"
                                        class="btn btn-warning w-100 py-2">
                                         <i class="bi bi-arrow-left-circle me-2"></i> Regresar
                                     </a>

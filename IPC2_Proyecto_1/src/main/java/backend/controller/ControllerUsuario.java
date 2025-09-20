@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -33,6 +34,7 @@ public class ControllerUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            System.out.println("hola desde ControllerUsuario");
             ExtraccionDeDatos extraccion = new ExtraccionDeDatos();
             Usuario usuario = extraccion.extraerUsuarioFormulario(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -56,9 +58,9 @@ public class ControllerUsuario extends HttpServlet {
             try {
                 request.setAttribute("usuarios", usuarioDAO.seleccionar());
             } catch (SQLException ex) {
-                request.setAttribute("error", ex.getMessage());
+                request.setAttribute("error", "Error en la base de datos: " + ex.getErrorCode());
                 RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher("/error/error.jsp");
+                        .getRequestDispatcher("/error/errorSqlSistema.jsp");
                 dispatcher.forward(request, response);
             }
 
@@ -68,17 +70,12 @@ public class ControllerUsuario extends HttpServlet {
         } else {
             // busco el evento por codigo y redirijo a la vista
             try {
-                System.out.println(request.getParameter("id"));
-                Usuario usuario = usuarioDAO.seleccionarPorParametro(request.getParameter("id"));
-                if (usuario != null) {
-                    request.setAttribute("usuarios", Collections.singletonList(usuario));
-                } else {
+                List<Usuario> usuario = usuarioDAO.seleccionarPorParametro(request.getParameter("id"));
                     request.setAttribute("usuarios", usuario);
-                }
             } catch (SQLException e) {
-                request.setAttribute("error", e.getMessage());
+                request.setAttribute("error", "Error en la base de datos: " + e.getErrorCode());
                 RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher("/error/error.jsp");
+                        .getRequestDispatcher("/error/errorSqlSistema.jsp");
                 dispatcher.forward(request, response);
             }
 

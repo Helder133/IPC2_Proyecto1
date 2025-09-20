@@ -1,6 +1,6 @@
 <%-- 
-    Document   : error
-    Created on : 18/09/2025, 11:13:52
+    Document   : errorSql
+    Created on : 19/09/2025, 18:30:54
     Author     : helder
 --%>
 
@@ -32,7 +32,7 @@
                             <jsp:include page="errorGenerico.jsp"/>
 
                             <div class="text-center">
-                                <a href="${pageContext.request.contextPath}/index.jsp"
+                                <a href="${pageContext.request.contextPath}/login/Administrador Sistema/usuario.jsp"
                                    class="btn btn-warning w-100 py-2">
                                     <i class="bi bi-arrow-left-circle me-2"></i> Regresar
                                 </a>
@@ -44,3 +44,10 @@
         </main>
     </body>
 </html>
+
+
+
+
+
+
+

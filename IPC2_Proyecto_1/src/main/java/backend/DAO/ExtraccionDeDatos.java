@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -47,23 +48,51 @@ public class ExtraccionDeDatos {
         return usuario;
     }
 
-    public Usuario extraerDatosLogin(HttpServletRequest request) throws IncompletoException {
-        String user = request.getParameter("Usuario");
-        String contraseña = request.getParameter("Contraseña");
+    public Usuario extraerUsuarioPorAdmin(HttpServletRequest request) throws IncompletoException,
+            ObjetoExistenteException,
+            IOException,
+            ServletException {
+        String ruta = null;
+        Part filePart = request.getPart("foto");
+        if (filePart != null && filePart.getSize() > 0) {
+            ruta = PATH + File.separator + filePart.getSubmittedFileName();
+            filePart.write(ruta);
+        }
+        Usuario usuario = new Usuario(
+                request.getParameter("dpi"),
+                ruta,
+                request.getParameter("nombre"),
+                request.getParameter("telefono"),
+                request.getParameter("organizacion"),
+                request.getParameter("email"),
+                request.getParameter("contraseña"));
 
-        if (user == null || user.isBlank() || contraseña == null || contraseña.isBlank()) {
+        if (usuario.esValido() || StringUtils.isBlank(request.getParameter("estado"))
+                || StringUtils.isBlank(request.getParameter("rol"))) {
+            throw new IncompletoException("Faltan datos, Vuelva a intentar");
+        }
+        boolean estado = request.getParameter("estado").equalsIgnoreCase("Habilitado");
+        usuario.setEstado(estado);
+        usuario.setRol(request.getParameter("rol"));
+
+        return usuario;
+    }
+
+    public Usuario extraerDatosLogin(HttpServletRequest request) throws IncompletoException {
+        if (StringUtils.isBlank(request.getParameter("Contraseña")) || 
+                StringUtils.isBlank(request.getParameter("Usuario"))) {
             throw new IncompletoException("Faltan datos, vuelva a intentar");
         }
 
         Usuario usuario = new Usuario(
-                user,
+                request.getParameter("Usuario"),
                 request.getParameter(null), // foto
                 request.getParameter(null), // nombre
                 request.getParameter(null), // telefono 
                 request.getParameter(null), // organizaccion
                 request.getParameter(null), // email
-                contraseña);
-        
+                request.getParameter("Contraseña"));
+
         return usuario;
     }
 }

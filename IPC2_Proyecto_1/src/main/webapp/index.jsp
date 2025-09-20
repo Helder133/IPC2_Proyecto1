@@ -11,29 +11,33 @@
         <meta charset="UTF-8">
         <title>Inicio de Sesión</title>
         <jsp:include page="/includes/resources.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css" />
     </head>
-    <body>
-        <main>
-            <div class="login-card">
-                <h4 class="text-center mb-4">Inicio de Sesión</h4>
-                <form method="POST" action="${pageContext.servletContext.contextPath}/ControllerLogin" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="User" class="form-label">Documento de Identificación</label>
-                        <input type="text" class="form-control" id="Usuario" name="Usuario" placeholder="DPI o Pasaporte" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="Contraseña" name="Contraseña" placeholder="Ingrese su contraseña" required>
-                    </div>
-                    <button type="submit" class="btn btn-login w-100">Ingresar</button>
+    <body class="bg-dark text-light">
+        <div class="d-flex justify-content-center align-items-center min-vh-100">
+            <main class="w-100" style="max-width: 400px;">
+                <div class="card shadow-lg bg-secondary text-light p-4 rounded-4">
+                    <h4 class="text-center mb-4">Inicio de Sesión</h4>
+                    <form method="POST" action="${pageContext.servletContext.contextPath}/ControllerLogin">
 
-                    <div class="text-center mt-3 small text-muted">
-                        ¿No estas registrado? <a href="${pageContext.request.contextPath}/nuevoUsuario/nuevoUsuario.jsp" class="link-light">Registrate</a>
-                    </div>
-                </form>
-            </div>
-        </main>
+                        <div class="mb-3">
+                            <label for="Usuario" class="form-label">Documento de Identificación</label>
+                            <input type="text" class="form-control" id="Usuario" name="Usuario" placeholder="DPI o Pasaporte" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="Contraseña" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="Contraseña" name="Contraseña" placeholder="Ingrese su contraseña" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+
+                        <div class="text-center mt-3 small text-muted">
+                            ¿No estás registrado?
+                            <a href="${pageContext.request.contextPath}/nuevoUsuario/nuevoUsuario.jsp" class="link-light">Regístrate</a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
     </body>
 </html>
-

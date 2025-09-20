@@ -14,64 +14,77 @@
         <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body class="bg-dark text-light">
-        <div class="container">
-            <main>
-                <jsp:include page="/includes/headerAdminSistema.jsp"/>
+        <jsp:include page="/includes/headerAdminSistema.jsp"/>
 
-                <div class="container text-center mt-4 mb-4">
-                    <a href="${pageContext.servletContext.contextPath}/nuevoUsuario/nuevoUsuario.jsp" 
-                       class="btn btn-success shadow-lg">
-                        <i class="bi bi-file-earmark-plus"></i>
-                        Crear Usuario
-                    </a>
-                </div>
+        <div class="container py-4">
+            <div class="d-flex justify-content-center mb-4">
+                <a href="${pageContext.servletContext.contextPath}/login/Administrador Sistema/agregarUsuario.jsp" 
+                   class="btn btn-success btn-lg">
+                    <i class="bi bi-file-earmark-plus me-2"></i>
+                    Crear Usuario
+                </a>
+            </div>
 
-                <div class="container mb-4">
-                    <form method="get" action="${pageContext.servletContext.contextPath}/ControllerUsuario" class="row g-3">
-                        <div class="col-md-10">
-                            <input type="text" id="id" name="id" class="form-control bg-dark text-light border-secondary" 
-                                   placeholder="Buscar usuario por DPI o Pasaporte" required>
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-10">
+                    <form method="get" action="${pageContext.servletContext.contextPath}/ControllerUsuario" class="row g-2">
+                        <div class="col-md-10 col-sm-8">
+                            <input type="text" id="id" name="id" class="form-control bg-secondary text-light border-dark" 
+                                   placeholder="Buscar usuario por DPI o Pasaporte y nombre" required>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-sm-4">
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-search"></i> Buscar
+                                <i class="bi bi-search me-2"></i>Buscar
                             </button>
                         </div>
                     </form>
                 </div>
-                <c:if test="${not empty mensajeInfo}">
-                    <div class="container mt-3">
-                        <div class="alert alert-info">${mensajeInfo}</div>
-                    </div>
-                </c:if>
+            </div>
 
-                <c:if test="${empty usuarios}">
-                    <div class="container">
-                        <div class="alert alert-warning">No hay usuarios para mostrar.</div>
+            <c:if test="${not empty mensajeInfo}">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="alert alert-info alert-dismissible fade show">
+                            ${mensajeInfo}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                     </div>
-                </c:if>
-                        
-                <div class="container">
-                    <c:forEach items="${usuarios}" var="usuario">
-                        <div class="card bg-secondary text-light shadow-lg mb-4">
+                </div>
+            </c:if>
+
+            <c:if test="${empty usuarios}">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="alert alert-warning">
+                            No hay usuarios para mostrar.
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <c:forEach items="${usuarios}" var="usuario">
+                    <div class="col">
+                        <div class="card h-100 bg-secondary text-light border-light user-card">
                             <div class="card-header fw-bold">
                                 ${usuario.DPI_o_Pasaporte}
                             </div>
-                            <div class="card-body">
+                            <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">${usuario.nombre}</h5>
-                                <p class="card-text">
+                                <p class="card-text flex-grow-1">
                                     <span class="fw-bold">Rol:</span> ${usuario.rol} <br/>
-                                    <span class="fw-bold">Organización:</span> ${usuario.organizacion}
+                                    <span class="fw-bold">Organización:</span> ${usuario.organizacion} <br/>
+                                    <span class="fw-bold">Estado:</span> ${usuario.estado == true ? "Habilitado" : "Deshabilitado"}
                                 </p>
                                 <a href="${pageContext.servletContext.contextPath}/ControllerUsuario?id=${usuario.DPI_o_Pasaporte}" 
-                                   class="btn btn-warning w-100">
-                                    <i class="bi bi-pencil-square"></i> Editar usuario
+                                   class="btn btn-warning mt-auto">
+                                    <i class="bi bi-pencil-square me-2"></i>Editar usuario
                                 </a>
                             </div>
                         </div>
-                    </c:forEach>
-                </div>
-            </main>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
     </body>
 </html>

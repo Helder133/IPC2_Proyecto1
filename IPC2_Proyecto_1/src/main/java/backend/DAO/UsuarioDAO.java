@@ -23,10 +23,12 @@ public class UsuarioDAO implements CRUD<Usuario> {
     private static final String ENCONTRAR_USUARIO_POR_CODIGO_QUERY = "select * from Usuario where DPI_o_Pasaporte = ?";
     private static final String ENCONTRAR_USUARIO_POR_EMAIL_QUERY = "select * from Usuario where Email = ?";
     private static final String INSETAR_USUARIO = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña) values (?,?,?,?,?,?,?);";
+    private static final String INSETAR_USUARIO_POR_ADMIN = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña, Estado, Rol) values (?,?,?,?,?,?,?,?,?);";
     private static final String ENCONTRAR_USUARIO_LOGIN = "select * from Usuario where DPI_o_Pasaporte = ? and Contraseña = ?";
     private static final String SELECCIONAR_TODOS_LOS_USUARIOS = "select * from Usuario";
+    private static final String ENCONTRAR_USUARIO_POR_ID_O_NOMBRE = "select * from Usuario where DPI_o_Pasaporte LIKE ? OR Nombre LIKE ?";
     @Override
-    public Usuario insetar(Usuario t) throws SQLException, ObjetoExistenteException {
+    public void insetar(Usuario t) throws SQLException, ObjetoExistenteException {
         if (existeUsuario(t)) {
             throw new ObjetoExistenteException(String.format("El Usuario '%s' con documento '%s' ya existe", t.getNombre(), t.getDPI_o_Pasaporte()));
         } else if (existeCorreo(t)) {
@@ -42,7 +44,6 @@ public class UsuarioDAO implements CRUD<Usuario> {
             insert.setString(6, t.getEmail());
             insert.setString(7, t.getContraseña());
             insert.executeUpdate();
-            return t;
         } catch (SQLException e) {
             throw new SQLException(e);
         }
@@ -96,11 +97,14 @@ public class UsuarioDAO implements CRUD<Usuario> {
 
     @Override
     public List<Usuario> seleccionar() throws SQLException {
+        int max = 10;
+        int contador = 0;
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(SELECCIONAR_TODOS_LOS_USUARIOS);) {
             ResultSet result = query.executeQuery();
-            while (result.next()) {
+            while (result.next() && contador < max) {
+                contador ++;
                 Usuario usuario = new Usuario(
                         result.getString("DPI_o_Pasaporte"),
                         result.getString("Foto"),
@@ -130,12 +134,18 @@ public class UsuarioDAO implements CRUD<Usuario> {
     }
 
     @Override
-    public Usuario seleccionarPorParametro(String t) throws SQLException {
+    public List<Usuario> seleccionarPorParametro(String t) throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        int max = 10;
+        int contador = 0;
         Connection connection = DBConnections.getInstance().getConnection();
-        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_CODIGO_QUERY)) {
-            query.setString(1, t);
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_ID_O_NOMBRE)) {
+            String busqueda = "%"+t+"%";
+            query.setString(1, busqueda);
+            query.setString(2, busqueda);
             ResultSet result = query.executeQuery();
-            if (result.next()) {
+            while (result.next() && contador < max) {
+                contador ++;
                 Usuario usuario = new Usuario(
                         result.getString("DPI_o_Pasaporte"),
                         result.getString("Foto"),
@@ -143,20 +153,45 @@ public class UsuarioDAO implements CRUD<Usuario> {
                         result.getString("Telefono"),
                         result.getString("Organizacion"),
                         result.getString("Email"),
-                        "");
+                        ""); //contraseña
                 usuario.setEstado(result.getBoolean("Estado"));
                 usuario.setRol(result.getString("Rol"));
-                return usuario;
+                
+                usuarios.add(usuario);
             } 
+            return usuarios;
         } catch (SQLException e) {
             throw new SQLException(e);
         }
-        return null;
     }
 
     @Override
     public Usuario seleccionarPorParametro(int t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void insertPorAdmin(Usuario t) throws SQLException, ObjetoExistenteException {
+        if (existeUsuario(t)) {
+            throw new ObjetoExistenteException(String.format("El Usuario '%s' con documento '%s' ya existe", t.getNombre(), t.getDPI_o_Pasaporte()));
+        } else if (existeCorreo(t)) {
+            throw new ObjetoExistenteException(String.format("El correo '%s' ya existe", t.getEmail()));
+        }
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement insert = connection.prepareStatement(INSETAR_USUARIO_POR_ADMIN);) {
+            insert.setString(1, t.getDPI_o_Pasaporte());
+            insert.setString(2, t.getFoto());
+            insert.setString(3, t.getNombre());
+            insert.setString(4, t.getTelefono());
+            insert.setString(5, t.getOrganizacion());
+            insert.setString(6, t.getEmail());
+            insert.setString(7, t.getContraseña());
+            insert.setBoolean(8, t.getEstado());
+            insert.setString(9, t.getRol());  
+            insert.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
 }
