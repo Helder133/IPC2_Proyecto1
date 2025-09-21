@@ -18,7 +18,8 @@ public interface CRUD <T> {
     List<T> seleccionar () throws SQLException;
     void actualiza (T t) throws SQLException;
     void eliminar (T t) throws SQLException;
-    List<T> seleccionarPorParametro (String t) throws SQLException;
-    T seleccionarPorParametro (int t) throws SQLException;
+    List<T> seleccionarPorParametroDpOE (String t) throws SQLException;
+    T seleccionarPorParametro (String t) throws SQLException;
+    
     void insertPorAdmin (T t) throws SQLException, ObjetoExistenteException;
 }

@@ -37,10 +37,19 @@
                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Juan Pérez" required>
                     </div>
 
-                    <!-- Teléfono -->
+                    <!-- Teléfono con código de país -->
                     <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="5555-5555" required>
+                        <label class="form-label">Teléfono</label>
+                        <div class="phone-container">
+                            <div>
+                                <label for="codigo" class="form-label">Código País</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" placeholder="+502" required>
+                            </div>
+                            <div>
+                                <label for="telefono" class="form-label">Número</label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="5555-5555" required>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Organización -->

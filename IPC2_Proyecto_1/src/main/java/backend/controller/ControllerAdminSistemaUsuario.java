@@ -31,9 +31,8 @@ public class ControllerAdminSistemaUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("hola ControllerAdminSistemaUsuario");
             ExtraccionDeDatos extraccion = new ExtraccionDeDatos();
-            Usuario usuario = extraccion.extraerUsuarioPorAdmin(request);
+            Usuario usuario = extraccion.extraerUsuarioFormularioY_OActualizar(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.insertPorAdmin(usuario);
             request.setAttribute("usuario", usuario);

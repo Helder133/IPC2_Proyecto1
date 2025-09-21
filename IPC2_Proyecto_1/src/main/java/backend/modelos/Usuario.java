@@ -22,7 +22,8 @@ public class Usuario {
     private String contraseña;
     private Boolean estado;
     private String rol;
-
+    private String codigo;
+    private String numero;
     public Usuario(String DPI_o_Pasaporte, String foto, String nombre, String telefono, String organizacion, String email, String contraseña) {
         this.DPI_o_Pasaporte = DPI_o_Pasaporte;
         this.foto = foto;
@@ -121,5 +122,22 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
-//    
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
+    
 }

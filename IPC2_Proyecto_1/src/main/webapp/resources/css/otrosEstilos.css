@@ -84,13 +84,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     font-weight: 500;
     color: #e9ecef;
 }
-.select-row {
+.phone-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 100px 1fr;
     gap: 15px;
 }
-@media (max-width: 768px) {
-    .select-row {
+/* Estilos para el placeholder */
+.form-control::placeholder {
+    color: #adb5bd !important;
+    opacity: 1;
+}
+.form-control::-webkit-input-placeholder {
+    color: #adb5bd;
+}
+.form-control::-moz-placeholder {
+    color: #adb5bd;
+    opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+    color: #adb5bd;
+}
+.form-control::-ms-input-placeholder {
+    color: #adb5bd;
+}
+@media (max-width: 576px) {
+    .phone-container {
         grid-template-columns: 1fr;
     }
-}
+    
+    .user-card:hover {
+        transform: translateY(-3px);
+        transition: transform 0.2s;
+    }
+    .photo-container {
+        width: 100px;
+        height: 100px;
+    }

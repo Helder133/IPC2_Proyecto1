@@ -1,8 +1,9 @@
 <%-- 
-    Document   : usuario-creado
-    Created on : 17/09/2025, 00:01:48
+    Document   : UsuarioActualizado
+    Created on : 21/09/2025, 02:17:00
     Author     : helder
 --%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="backend.modelos.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -24,13 +25,13 @@
                                     <i class="bi bi-check-circle-fill me-2"></i>Usuario registrado: ${usuario.DPI_o_Pasaporte}
                                 </div>
                                 <div class="card-body text-center p-4">
-                                    <h5 class="card-title mb-3">Registro exitoso</h5>
+                                    <h5 class="card-title mb-3">Actualizacion exitosa</h5>
                                     <p class="card-text mb-4">
                                         Usuario con nombre:
                                         <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.nombre}</span>
-                                        Con ro:
+                                        Con rol:
                                         <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.rol}</span>
-                                        registrado exitosamente
+                                        Actualizado exitosamente
                                     </p>
                                     <a href="${pageContext.request.contextPath}/ControllerUsuario" class="btn btn-warning w-100 py-2">
                                         <i class="bi bi-box-arrow-in-right me-2"></i> Regresar

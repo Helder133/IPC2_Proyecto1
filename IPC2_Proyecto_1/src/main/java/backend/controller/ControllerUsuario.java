@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +33,6 @@ public class ControllerUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("hola desde ControllerUsuario");
             ExtraccionDeDatos extraccion = new ExtraccionDeDatos();
             Usuario usuario = extraccion.extraerUsuarioFormulario(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -70,7 +68,7 @@ public class ControllerUsuario extends HttpServlet {
         } else {
             // busco el evento por codigo y redirijo a la vista
             try {
-                List<Usuario> usuario = usuarioDAO.seleccionarPorParametro(request.getParameter("id"));
+                List<Usuario> usuario = usuarioDAO.seleccionarPorParametroDpOE(request.getParameter("id"));
                     request.setAttribute("usuarios", usuario);
             } catch (SQLException e) {
                 request.setAttribute("error", "Error en la base de datos: " + e.getErrorCode());

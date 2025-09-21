@@ -41,17 +41,6 @@
                 </div>
             </div>
 
-            <c:if test="${not empty mensajeInfo}">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="alert alert-info alert-dismissible fade show">
-                            ${mensajeInfo}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-
             <c:if test="${empty usuarios}">
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
@@ -70,13 +59,16 @@
                                 ${usuario.DPI_o_Pasaporte}
                             </div>
                             <div class="card-body d-flex flex-column">
+                                <img src="${pageContext.request.contextPath}/${empty usuario.foto?"fotos/perfil.jpeg":usuario.foto}" alt="Foto de ${usuario.nombre}" 
+                                     class="img-fluid rounded-circle mb-3" 
+                                     style="max-width:80px;">
                                 <h5 class="card-title">${usuario.nombre}</h5>
                                 <p class="card-text flex-grow-1">
                                     <span class="fw-bold">Rol:</span> ${usuario.rol} <br/>
                                     <span class="fw-bold">Organización:</span> ${usuario.organizacion} <br/>
                                     <span class="fw-bold">Estado:</span> ${usuario.estado == true ? "Habilitado" : "Deshabilitado"}
                                 </p>
-                                <a href="${pageContext.servletContext.contextPath}/ControllerUsuario?id=${usuario.DPI_o_Pasaporte}" 
+                                <a href="${pageContext.servletContext.contextPath}/ControllerUsuarioActualizadoAdminS?id=${usuario.DPI_o_Pasaporte}" 
                                    class="btn btn-warning mt-auto">
                                     <i class="bi bi-pencil-square me-2"></i>Editar usuario
                                 </a>

@@ -29,8 +29,6 @@
                             <div class="mb-4">
                                 <p class="mb-2 fs-5">${error}!!!</p>
                             </div>
-                            <jsp:include page="errorGenerico.jsp"/>
-
                             <div class="text-center">
                                 <a href="${pageContext.request.contextPath}/index.jsp"
                                    class="btn btn-warning w-100 py-2">

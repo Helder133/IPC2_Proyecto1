@@ -35,8 +35,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="5555-5555" required>
+                        <label class="form-label">Teléfono</label>
+                        <div class="phone-container">
+                            <div>
+                                <label for="codigo" class="form-label">Código País</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" placeholder="+502" value="${usuario.codigo}" required>
+                            </div>
+                            <div>
+                                <label for="telefono" class="form-label">Número</label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="5555-5555" value="${usuario.numero}" required>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
