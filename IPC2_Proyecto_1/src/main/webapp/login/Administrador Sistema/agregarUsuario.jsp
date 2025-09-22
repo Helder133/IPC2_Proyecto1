@@ -50,7 +50,7 @@
 
                     <div class="mb-3">
                         <label for="organizacion" class="form-label">Organización</label>
-                        <input type="text" class="form-control" id="organizacion" name="organizacion" placeholder="Empresa/Universidad" required>
+                        <input type="text" class="form-control" id="organizacion" name="organizacion" placeholder="Empresa/Universidad">
                     </div>
 
                     <div class="mb-3">

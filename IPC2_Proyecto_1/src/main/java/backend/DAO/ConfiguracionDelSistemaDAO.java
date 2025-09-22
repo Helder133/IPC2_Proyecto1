@@ -21,7 +21,7 @@ import java.util.List;
 public class ConfiguracionDelSistemaDAO implements CRUD<ConfiguracionDelSistema>{
     private static final String SELECCIONAR_CONFIGURACION = "SELECT * FROM Configuracion_Del_Sistema";
     private static final String ACTUALIZAR_CONFIGURACION = "update Configuracion_Del_Sistema set Porcentaje_Comision = ?, Precio_Minimo_Congreso = ? where Id_Configuracion = ?";
-    private static final String SELECCIONAR_CONFIGURACION_POR_ID = "SELECT * FROM Configuracion_Del_Sistema WHERE Configuracion_Del_Sistema = ?";
+    private static final String SELECCIONAR_CONFIGURACION_POR_ID = "SELECT * FROM Configuracion_Del_Sistema WHERE Id_Configuracion = ?";
     
     @Override
     public void insetar(ConfiguracionDelSistema t) throws SQLException, ObjetoExistenteException {

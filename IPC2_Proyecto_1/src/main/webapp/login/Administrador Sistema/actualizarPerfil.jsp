@@ -1,6 +1,6 @@
 <%-- 
-    Document   : actualizarUsuario
-    Created on : 20/09/2025, 12:19:15
+    Document   : actualizarPerfil
+    Created on : 22/09/2025, 12:29:26
     Author     : helder
 --%>
 
@@ -9,19 +9,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Actualizar Usuario</title>
+        <title>Actualizar Perfil</title>
         <jsp:include page="/includes/resources.jsp"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/registro.css" />
     </head>
     <body class="bg-dark text-light">
+        <jsp:include page="/includes/headerAdminSistema.jsp"/>
         <div class="centered-form">
             <div class="register-card">
                 <h4 class="text-center mb-4 text-white">Editar Usuario</h4>
-                <form method="post" action="${pageContext.servletContext.contextPath}/ControllerUsuarioActualizadoAdminS" enctype="multipart/form-data">
+                <form method="post" action="${pageContext.servletContext.contextPath}/controllerPerfil" enctype="multipart/form-data">
 
                     <div class="mb-3">
                         <label for="dpi" class="form-label">DPI o Pasaporte</label>
-                        <div class="current-value">${usuario.DPI_o_Pasaporte}</div>
+                        <label class="form-label">${usuario.DPI_o_Pasaporte}</label>
                         <input type="hidden" id="dpi" name="dpi" value="${usuario.DPI_o_Pasaporte}">
                     </div>
 
@@ -79,19 +80,13 @@
                     <div class="select-row mb-3">
                         <div>
                             <label for="estado" class="form-label">Estado</label>
-                            <select id="estado" name="estado" class="form-control">
-                                <option value="Habilitado" ${usuario.estado == true ? "selected" : ""}>Habilitado</option>
-                                <option value="Deshabilitado" ${usuario.estado == false ? "selected" : ""}>Deshabilitado</option>
-                            </select>
+                            <label class="form-control">${usuario.estado}</label>
+                            <input type="hidden" id="estado" name="estado" value="${usuario.estado == true ? "Habilitado" : "Deshabilitado"}">
                         </div>
                         <div>
                             <label for="rol" class="form-label">Rol</label>
-                            <select id="rol" name="rol" class="form-control">
-                                <option value="Administrador Sistema" ${usuario.rol eq 'Administrador Sistema' ? "selected" : ""}>Administrador Sistema</option>
-                                <option value="Administrador Congreso" ${usuario.rol eq 'Administrador Congreso' ? "selected" : ""}>Administrador Congreso</option>
-                                <option value="Participante" ${usuario.rol eq 'Participante' ? "selected" : ""}>Participante</option>
-                                <option value="Participante Invitado" ${usuario.rol eq 'Participante Invitado' ? "selected" : ""}>Participante Invitado</option>
-                            </select>
+                            <label class="form-control">${usuario.rol}</label>
+                            <input type="hidden" id="rol" name="rol" value="${usuario.rol}">
                         </div>
                     </div>
 
@@ -100,7 +95,7 @@
                 </form>
 
                 <div class="text-center mt-3 small">
-                    <a href="${pageContext.request.contextPath}/ControllerUsuario" class="text-info text-decoration-none">
+                    <a href="${pageContext.request.contextPath}/controllerPerfil" class="text-info text-decoration-none">
                         <i class="bi bi-arrow-left me-1"></i> Volver al listado de usuarios
                     </a>
                 </div>
