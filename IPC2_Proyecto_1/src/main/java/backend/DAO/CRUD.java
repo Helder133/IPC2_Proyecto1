@@ -16,10 +16,11 @@ import java.util.List;
 public interface CRUD <T> {
     void insetar (T t) throws SQLException,ObjetoExistenteException;
     List<T> seleccionar () throws SQLException;
-    void actualiza (T t) throws SQLException;
+    void actualiza (T t) throws SQLException, ObjetoExistenteException;
     void eliminar (T t) throws SQLException;
     List<T> seleccionarPorParametroDpOE (String t) throws SQLException;
     T seleccionarPorParametro (String t) throws SQLException;
-    
     void insertPorAdmin (T t) throws SQLException, ObjetoExistenteException;
+    T seleccionarPorParametro (int t) throws SQLException;
+    
 }

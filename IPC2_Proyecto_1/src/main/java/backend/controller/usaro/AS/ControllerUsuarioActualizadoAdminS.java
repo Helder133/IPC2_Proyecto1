@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package backend.controller;
+package backend.controller.usaro.AS;
 
 import backend.DAO.ExtraccionDeDatos;
 import backend.DAO.UsuarioDAO;
@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  *
@@ -39,7 +38,7 @@ public class ControllerUsuarioActualizadoAdminS extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher("/login/Administrador Sistema/actualizarUsuario.jsp");
             dispatcher.forward(request, response);
-        } catch (SQLException e) {
+        } catch (ServletException | IOException | SQLException e) {
            request.setAttribute("error", e.getMessage());
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher("/error/error.jsp");
@@ -51,8 +50,6 @@ public class ControllerUsuarioActualizadoAdminS extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("Rol: "+request.getParameter("rol"));
-            System.out.println("Estado: "+request.getParameter("estado"));
             ExtraccionDeDatos extraccion = new ExtraccionDeDatos();
             Usuario usuario = extraccion.extraerUsuarioFormularioY_OActualizar(request);
             UsuarioDAO usuarioDAO = new UsuarioDAO();

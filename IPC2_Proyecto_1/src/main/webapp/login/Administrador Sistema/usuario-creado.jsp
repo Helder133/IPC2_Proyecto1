@@ -28,7 +28,7 @@
                                     <p class="card-text mb-4">
                                         Usuario con nombre:
                                         <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.nombre}</span>
-                                        Con ro:
+                                        Con rol:
                                         <span class="fw-bold text-info d-block mt-2 fs-5">${usuario.rol}</span>
                                         registrado exitosamente
                                     </p>
@@ -48,14 +48,13 @@
                                     </div>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <a href="${pageContext.request.contextPath}/ControllerUsuario"
+                                    <a href="${pageContext.request.contextPath}/login/Administrador Sistema/agregarUsuario.jsp"
                                        class="btn btn-warning w-100 py-2">
                                         <i class="bi bi-arrow-left-circle me-2"></i> Regresar
                                     </a>
                                 </div>
                             </div>
                         </c:if>
-
                     </div>
                 </div>
             </div>

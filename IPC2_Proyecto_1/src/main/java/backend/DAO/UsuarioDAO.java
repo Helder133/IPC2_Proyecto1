@@ -23,6 +23,9 @@ public class UsuarioDAO implements CRUD<Usuario> {
 
     private static final String ENCONTRAR_USUARIO_POR_CODIGO_QUERY = "select * from Usuario where DPI_o_Pasaporte = ?";
     private static final String ENCONTRAR_USUARIO_POR_EMAIL_QUERY = "select * from Usuario where Email = ?";
+    private static final String ENCONTRAR_USUARIO_POR_EMAIL_QUERY_A = "select * from Usuario where Email = ? AND DPI_o_Pasaporte <> ?";
+    private static final String ENCONTRAR_USUARIO_POR_TELEFONO_QUERY = "select * from Usuario where Telefono = ?";
+    private static final String ENCONTRAR_USUARIO_POR_TELEFONO_QUERY_A = "select * from Usuario where Telefono = ? AND DPI_o_Pasaporte <> ?";
     private static final String INSETAR_USUARIO = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña) values (?,?,?,?,?,?,?);";
     private static final String INSETAR_USUARIO_POR_ADMIN = "insert into Usuario (DPI_o_Pasaporte, Foto, Nombre, Telefono, Organizacion, Email, Contraseña, Estado, Rol) values (?,?,?,?,?,?,?,?,?);";
     private static final String ENCONTRAR_USUARIO_LOGIN = "select * from Usuario where DPI_o_Pasaporte = ? and Contraseña = ?";
@@ -36,12 +39,14 @@ public class UsuarioDAO implements CRUD<Usuario> {
     @Override
     public void insetar(Usuario t) throws SQLException, ObjetoExistenteException {
         if (existeUsuario(t)) {
-            throw new ObjetoExistenteException(String.format("El Usuario '%s' con documento '%s' ya existe", t.getNombre(), t.getDPI_o_Pasaporte()));
+            throw new ObjetoExistenteException(String.format("Ya hay un usuario asociado con el documento '%s'", t.getDPI_o_Pasaporte()));
         } else if (existeCorreo(t)) {
-            throw new ObjetoExistenteException(String.format("El correo '%s' ya existe", t.getEmail()));
+            throw new ObjetoExistenteException(String.format("El correo '%s' ya esta asociado a otro usuario", t.getEmail()));
+        } else if (existeTelefono(t)) {
+            throw new ObjetoExistenteException(String.format("El Telefono '%s' ya esta asociado a otro usuario", t.getTelefono()));
         }
         Connection connection = DBConnections.getInstance().getConnection();
-        try (PreparedStatement insert = connection.prepareStatement(INSETAR_USUARIO);) {
+        try (PreparedStatement insert = connection.prepareStatement(INSETAR_USUARIO)) {
             insert.setString(1, t.getDPI_o_Pasaporte());
             insert.setString(2, t.getFoto());
             insert.setString(3, t.getNombre());
@@ -70,6 +75,41 @@ public class UsuarioDAO implements CRUD<Usuario> {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_EMAIL_QUERY)) {
             query.setString(1, usuario.getEmail());
+            ResultSet result = query.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+    
+    private boolean existeTelefono(Usuario usuario) throws SQLException {
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_TELEFONO_QUERY)) {
+            query.setString(1, usuario.getTelefono());
+            ResultSet result = query.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    private boolean existeCorreoA(Usuario usuario) throws SQLException {
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_EMAIL_QUERY_A)) {
+            query.setString(1, usuario.getEmail());
+            query.setString(2, usuario.getDPI_o_Pasaporte());
+            ResultSet result = query.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+    
+    private boolean existeTelefonoA(Usuario usuario) throws SQLException {
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_TELEFONO_QUERY_A)) {
+            query.setString(1, usuario.getTelefono());
+            query.setString(2, usuario.getDPI_o_Pasaporte());
             ResultSet result = query.executeQuery();
             return result.next();
         } catch (SQLException e) {
@@ -130,8 +170,18 @@ public class UsuarioDAO implements CRUD<Usuario> {
     }
 
     @Override
-    public void actualiza(Usuario t) throws SQLException {
-        System.out.println(t.getRol());
+    public void actualiza(Usuario t) throws SQLException, ObjetoExistenteException {
+        if (existeCorreoA(t)) {
+            throw new ObjetoExistenteException(String.format("El correo '%s' ya esta asociado a otro usuario", t.getEmail()));
+        } else if (existeTelefonoA(t)) {
+            throw new ObjetoExistenteException(String.format("El Telefono '%s' ya esta asociado a otro usuario", t.getTelefono()));
+        } else if (t.getRol().equals("Administrador Congreso")){
+            if(!existeOrganizacion(t.getOrganizacion())){
+                throw new ObjetoExistenteException(String.format("La organizacion a la que quiere asociar "
+                        + "al usuario: '%s' no existe", t.getOrganizacion()));
+            }
+        }
+        
         Connection connection = DBConnections.getInstance().getConnection();
         if (StringUtils.isBlank(t.getContraseña()) && StringUtils.isBlank(t.getFoto())) {
         try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_CONTRASEÑA_SIN_IMAGEN_QUERY);) {
@@ -268,9 +318,18 @@ public class UsuarioDAO implements CRUD<Usuario> {
     @Override
     public void insertPorAdmin(Usuario t) throws SQLException, ObjetoExistenteException {
         if (existeUsuario(t)) {
-            throw new ObjetoExistenteException(String.format("El Usuario '%s' con documento '%s' ya existe", t.getNombre(), t.getDPI_o_Pasaporte()));
+            throw new ObjetoExistenteException(String.format("Ya hay un usuario asociado con el documento '%s'", t.getDPI_o_Pasaporte()));
         } else if (existeCorreo(t)) {
-            throw new ObjetoExistenteException(String.format("El correo '%s' ya existe", t.getEmail()));
+            throw new ObjetoExistenteException(String.format("El correo '%s' ya esta asociado a otro usuario", t.getEmail()));
+        } else if (existeTelefono(t)) {
+            throw new ObjetoExistenteException(String.format("El Telefono '%s' ya esta asociado a otro usuario", t.getTelefono()));
+        }
+        
+        if (t.getRol().equals("Administrador Congreso")){
+            if(!existeOrganizacion(t.getOrganizacion())){
+                throw new ObjetoExistenteException(String.format("La organizacion a la que quiere asociar "
+                        + "al usuario: '%s' no existe", t.getOrganizacion()));
+            }
         }
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(INSETAR_USUARIO_POR_ADMIN);) {
@@ -284,6 +343,23 @@ public class UsuarioDAO implements CRUD<Usuario> {
             insert.setBoolean(8, t.getEstado());
             insert.setString(9, t.getRol());
             insert.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public Usuario seleccionarPorParametro(int t) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private boolean existeOrganizacion(String organizacion) throws SQLException{
+        String query1 = "select * from Institucion where Nombre = ?";
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(query1)) {
+            query.setString(1, organizacion);
+            ResultSet result = query.executeQuery();
+            return result.next();
         } catch (SQLException e) {
             throw new SQLException(e);
         }

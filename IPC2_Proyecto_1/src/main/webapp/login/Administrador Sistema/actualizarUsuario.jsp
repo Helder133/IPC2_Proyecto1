@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Nuevo Usuario</title>
+        <title>Actualizar Usuario</title>
         <jsp:include page="/includes/resources.jsp"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/registro.css" />
     </head>

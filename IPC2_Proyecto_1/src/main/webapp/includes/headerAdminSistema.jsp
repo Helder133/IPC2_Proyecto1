@@ -17,8 +17,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/ControllerUsuario" class="nav-link">Usuarios</a></li>
-                <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/mvc/eventos/eventos-servlet" class="nav-link">Instituciones</a></li>
-                <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/mvc/eventos/ajax/listado-ajax.jsp" class="nav-link">Ajustes del sistema</a></li>
+                <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/ControllerInstitucion" class="nav-link">Instituciones</a></li>
+                <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/controllerSistema" class="nav-link">Ajustes del sistema</a></li>
                 <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/mvc/files/upload-file.jsp" class="nav-link">Reporte</a></li>
                 <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/mvc/files/upload-file.jsp" class="nav-link">Perfil</a></li>
                 <li class="nav-item"><a href="${pageContext.request.contextPath}/ControllerLogin?action=logout" class="nav-link">Cerrar sesión</a></li>

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author helder
  */
 public class Usuario {
+
     private String DPI_o_Pasaporte;
     private String foto;
     private String nombre;
@@ -24,6 +25,7 @@ public class Usuario {
     private String rol;
     private String codigo;
     private String numero;
+
     public Usuario(String DPI_o_Pasaporte, String foto, String nombre, String telefono, String organizacion, String email, String contraseña) {
         this.DPI_o_Pasaporte = DPI_o_Pasaporte;
         this.foto = foto;
@@ -32,7 +34,7 @@ public class Usuario {
         this.organizacion = organizacion;
         this.email = email;
         this.contraseña = incriptar(contraseña);
-        this.estado = true; 
+        this.estado = true;
         this.rol = "Participante";
     }
 
@@ -75,15 +77,15 @@ public class Usuario {
     public void setEstado(Boolean estado) {
         this.estado = estado;
     }
-    
-    public boolean esValido () {
-    return StringUtils.isBlank(DPI_o_Pasaporte) && 
-            StringUtils.isBlank(nombre) &&
-            StringUtils.isBlank(telefono) &&
-            StringUtils.isBlank(organizacion) &&
-            StringUtils.isBlank(email) &&
-            StringUtils.isBlank(contraseña) &&
-            StringUtils.isBlank(rol);
+
+    public boolean esValido() {
+        return StringUtils.isBlank(DPI_o_Pasaporte)
+                || StringUtils.isBlank(nombre)
+                || StringUtils.isBlank(telefono)
+                || StringUtils.isBlank(organizacion)
+                || StringUtils.isBlank(email)
+                || StringUtils.isBlank(contraseña)
+                || StringUtils.isBlank(rol);
     }
 
     private String incriptar(String contraseña) {
@@ -138,6 +140,5 @@ public class Usuario {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    
-    
+
 }

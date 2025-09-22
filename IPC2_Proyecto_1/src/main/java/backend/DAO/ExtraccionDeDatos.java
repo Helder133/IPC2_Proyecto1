@@ -6,6 +6,7 @@ package backend.DAO;
 
 import backend.exceptions.IncompletoException;
 import backend.exceptions.ObjetoExistenteException;
+import backend.modelos.Institucion;
 import backend.modelos.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ExtraccionDeDatos {
 
     private static final String RELATIVE_PATH = "fotos";
-
+    // Extracción de datos para un Usuario (insetar, actualizar, obtener)
     public Usuario extraerUsuarioFormulario(HttpServletRequest request) throws IncompletoException,
             ObjetoExistenteException,
             IOException,
@@ -92,9 +93,17 @@ public class ExtraccionDeDatos {
         if (!numero.matches("\\d+")) {
             throw new IncompletoException("El número de teléfono solo puede contener dígitos numéricos");
         }
+        
+        
 
         String telefono = codigo + " " + numero;
-
+        String contraseña;
+        if (StringUtils.isBlank(request.getParameter("contraseña"))) {
+            contraseña = "-pi";
+        } else {
+            contraseña = request.getParameter("contraseña");
+        }
+        
         Usuario usuario = new Usuario(
                 request.getParameter("dpi"),
                 pathFoto(request), // ruta de la foto
@@ -102,10 +111,13 @@ public class ExtraccionDeDatos {
                 telefono,
                 request.getParameter("organizacion"),
                 request.getParameter("email"),
-                request.getParameter("contraseña"));
+                contraseña);
 
         if (usuario.esValido()) {
             throw new IncompletoException("Faltan datos, Vuelva a intentar");
+        }
+        if (StringUtils.isBlank(request.getParameter("contraseña"))) {
+            usuario.setContraseña(contraseña);
         }
 
         boolean estado = request.getParameter("estado").equalsIgnoreCase("Habilitado");
@@ -229,5 +241,52 @@ public class ExtraccionDeDatos {
             return RELATIVE_PATH + File.separator + newName;
         }
         return null;
+    }
+    
+    // Extracción de datos para una Institución (insetar, actualizar, obtener, eliminar)
+    
+   public Institucion extraerInstitucionFormulario(HttpServletRequest request) throws IncompletoException,
+            ObjetoExistenteException,
+            IOException,
+            ServletException,
+            NumberFormatException {
+        String codigo = request.getParameter("codigo");
+        String numero = request.getParameter("telefono");
+        
+        if (codigo == null || numero == null) {
+            throw new IncompletoException("El código de país y el número de teléfono son obligatorios");
+        }
+
+        if (!codigo.startsWith("+")) {
+            throw new IncompletoException("El código del país debe comenzar con '+'");
+        }
+
+        String soloNumerosCodigo = codigo.substring(1);
+        if (!soloNumerosCodigo.matches("\\d+")) {
+            throw new IncompletoException("El código del país solo puede contener números después del '+'");
+        }
+
+        if (!numero.matches("\\d+")) {
+            throw new IncompletoException("El número de teléfono solo puede contener dígitos numéricos");
+        }
+
+        String telefono = codigo + " " + numero;
+
+        Institucion institucion = new Institucion(
+                request.getParameter("nombre"),
+                request.getParameter("direccion"),
+                telefono,
+                request.getParameter("email"));
+
+        if (institucion.esValido()) {
+            throw new IncompletoException("Faltan datos, Vuelva a intentar");
+        }
+        
+        if (StringUtils.isNotBlank(request.getParameter("id"))) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            institucion.setId(id);
+        }
+
+        return institucion;
     }
 }
