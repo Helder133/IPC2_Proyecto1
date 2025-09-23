@@ -69,6 +69,12 @@
                                    class="btn btn-warning mt-auto">
                                     <i class="bi bi-pencil-square me-2"></i>Editar usuario
                                 </a>
+                                <form method="post" action="${pageContext.servletContext.contextPath}/ControllerCongresoEliminar" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="${congreso.idCongreso}" />
+                                    <button type="submit" class="btn btn-outline-danger mt-auto">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>Eliminar Institución
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

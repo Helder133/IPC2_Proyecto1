@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package backend.controller.usaro.AS;
+package backend.controller.usuario.AS;
 
 import backend.DAO.ExtraccionDeDatos;
 import backend.DAO.UsuarioDAO;

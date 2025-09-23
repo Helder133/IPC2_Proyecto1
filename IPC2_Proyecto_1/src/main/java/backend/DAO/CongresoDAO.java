@@ -109,7 +109,7 @@ public class CongresoDAO implements CRUD<Congreso>{
     public void eliminar(Congreso t) throws SQLException {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ELIMINAR_CONGRESO)) {
-            query.setInt(1, t.getIdInstitucion());
+            query.setInt(1, t.getIdCongreso());
             int filas = query.executeUpdate();
             if (filas == 0) {
                 throw new SQLException("Error al intentar eliminar, intente de nuevo");
