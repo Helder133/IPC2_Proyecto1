@@ -23,7 +23,7 @@
                         <input type="hidden" class="form-control" id="tipo" value="crear">
                         <label for="dpi" class="form-label">DPI o Pasaporte</label>
                         <input type="text" class="form-control" id="dpi" name="dpi" placeholder="Ej: 1234567890101" required>
-                    </di    v>
+                    </div>
 
                     <div class="mb-3">
                         <label for="foto" class="form-label">Foto de perfil</label>

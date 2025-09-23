@@ -13,8 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-
+    
 /**
  *
  * @author helder
@@ -140,7 +139,7 @@ public class InstitucionDAO implements CRUD<Institucion> {
                         result.getString("Nombre"),
                         result.getString("Direccion"),
                         result.getString("Telefono"),
-                        result.getString("Email")); //contraseña
+                        result.getString("Email"));
                 institucion.setId(result.getInt("Id_Institucion"));
 
                 instituciones.add(institucion);
@@ -153,7 +152,24 @@ public class InstitucionDAO implements CRUD<Institucion> {
 
     @Override
     public Institucion seleccionarPorParametro(String t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(VERIFICAR_NOMBRE)) {
+            query.setString(1, t);
+            ResultSet result = query.executeQuery();
+            if (result.next()) {
+                Institucion institucion = new Institucion(
+                        result.getString("Nombre"),
+                        result.getString("Direccion"),
+                        result.getString("Telefono"),
+                        result.getString("Email"));
+                institucion.setId(result.getInt("Id_Institucion"));
+                return institucion;
+            } else {
+                throw new SQLException("Error, intente de nuevo");
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
     @Override
