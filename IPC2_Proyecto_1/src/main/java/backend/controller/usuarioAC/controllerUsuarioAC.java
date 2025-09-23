@@ -11,7 +11,6 @@ import backend.exceptions.ObjetoExistenteException;
 import backend.modelos.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
