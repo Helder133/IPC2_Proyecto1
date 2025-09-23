@@ -6,6 +6,7 @@ package backend.controller.usaro.AS;
 
 import backend.DAO.ExtraccionDeDatos;
 import backend.DAO.UsuarioDAO;
+import backend.exceptions.DesabledUserExeption;
 import backend.exceptions.IncompletoException;
 import backend.exceptions.ObjetoExistenteException;
 import backend.modelos.Usuario;
@@ -45,30 +46,22 @@ public class ControllerLogin extends HttpServlet {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             Usuario usuario1 = usuarioDAO.extraerUsuarioRegistradoLogin(usuario);
             request.setAttribute("usuario", usuario1);
-            
+
             HttpSession session = request.getSession(true);
-            
+
             session.setAttribute("id", usuario1.getDPI_o_Pasaporte());
             session.setAttribute("rol", usuario1.getRol());
             session.setAttribute("nombre", usuario1.getNombre());
-            
-            if (usuario1.getRol().equalsIgnoreCase("Administrador Sistema")) {
-                RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher("/login/Administrador Sistema/homeAdminSistema.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher("/login/loginGenerico.jsp");
-                dispatcher.forward(request, response);
-            }
-        } catch (IncompletoException | ObjetoExistenteException | SQLException e) {
+
+            renderizarPagina(usuario1, request, response, session);
+        } catch (IncompletoException | ObjetoExistenteException | SQLException |DesabledUserExeption e) {
             request.setAttribute("error", e.getMessage());
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher("/error/error.jsp");
             dispatcher.forward(request, response);
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,15 +76,29 @@ public class ControllerLogin extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
     }
-    
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+
+    private void renderizarPagina(Usuario usuario, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        switch (usuario.getRol()) {
+            case "Administrador Sistema": {
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher("/login/Administrador Sistema/homeAdminSistema.jsp");
+                dispatcher.forward(request, response);
+                break;
+            }
+            case "Administrador Congreso": {
+                session.setAttribute("organizacion", usuario.getOrganizacion());
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher("/login/Administrador Congreso/homeAdminCongreso.jsp");
+                dispatcher.forward(request, response);
+                break;
+            }
+            default: {
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher("/login/loginGenerico.jsp");
+                dispatcher.forward(request, response);
+                break;
+            }
+        }
+    }
 
 }

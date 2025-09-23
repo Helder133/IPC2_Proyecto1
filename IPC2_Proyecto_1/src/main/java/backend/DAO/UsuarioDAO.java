@@ -5,6 +5,7 @@
 package backend.DAO;
 
 import backend.db.DBConnections;
+import backend.exceptions.DesabledUserExeption;
 import backend.exceptions.ObjetoExistenteException;
 import backend.modelos.Usuario;
 import java.sql.Connection;
@@ -81,7 +82,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
             throw new SQLException(e);
         }
     }
-    
+
     private boolean existeTelefono(Usuario usuario) throws SQLException {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_TELEFONO_QUERY)) {
@@ -104,7 +105,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
             throw new SQLException(e);
         }
     }
-    
+
     private boolean existeTelefonoA(Usuario usuario) throws SQLException {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_POR_TELEFONO_QUERY_A)) {
@@ -117,7 +118,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
         }
     }
 
-    public Usuario extraerUsuarioRegistradoLogin(Usuario usuario) throws SQLException, ObjetoExistenteException {
+    public Usuario extraerUsuarioRegistradoLogin(Usuario usuario) throws SQLException, ObjetoExistenteException, DesabledUserExeption {
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(ENCONTRAR_USUARIO_LOGIN)) {
             query.setString(1, usuario.getDPI_o_Pasaporte());
@@ -132,6 +133,10 @@ public class UsuarioDAO implements CRUD<Usuario> {
                 usuario.setContraseña("");
                 usuario.setEstado(result.getBoolean("Estado"));
                 usuario.setRol(result.getString("Rol"));
+
+                if (!usuario.getEstado()) {
+                    throw new DesabledUserExeption("Su cuenta a sido deshabilitada, comuniquese con soporte");
+                }
                 return usuario;
             } else {
                 throw new ObjetoExistenteException("Usuario o contraseña incorrecta, vuelva a intentar");
@@ -175,67 +180,66 @@ public class UsuarioDAO implements CRUD<Usuario> {
             throw new ObjetoExistenteException(String.format("El correo '%s' ya esta asociado a otro usuario", t.getEmail()));
         } else if (existeTelefonoA(t)) {
             throw new ObjetoExistenteException(String.format("El Telefono '%s' ya esta asociado a otro usuario", t.getTelefono()));
-        } else if (t.getRol().equals("Administrador Congreso")){
-            if(!existeOrganizacion(t.getOrganizacion())){
+        } else if (t.getRol().equals("Administrador Congreso")) {
+            if (!existeOrganizacion(t.getOrganizacion())) {
                 throw new ObjetoExistenteException(String.format("La organizacion a la que quiere asociar "
                         + "al usuario: '%s' no existe", t.getOrganizacion()));
             }
         }
-        
         Connection connection = DBConnections.getInstance().getConnection();
         if (StringUtils.isBlank(t.getContraseña()) && StringUtils.isBlank(t.getFoto())) {
-        try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_CONTRASEÑA_SIN_IMAGEN_QUERY);) {
-            insert.setString(1, t.getNombre());
-            insert.setString(2, t.getTelefono());
-            insert.setString(3, t.getOrganizacion());
-            insert.setString(4, t.getEmail());
-            insert.setBoolean(5, t.getEstado());
-            insert.setString(6, t.getRol());
-            insert.setString(7, t.getDPI_o_Pasaporte());
-            insert.executeUpdate();
+            try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_CONTRASEÑA_SIN_IMAGEN_QUERY);) {
+                insert.setString(1, t.getNombre());
+                insert.setString(2, t.getTelefono());
+                insert.setString(3, t.getOrganizacion());
+                insert.setString(4, t.getEmail());
+                insert.setBoolean(5, t.getEstado());
+                insert.setString(6, t.getRol());
+                insert.setString(7, t.getDPI_o_Pasaporte());
+                insert.executeUpdate();
             } catch (SQLException e) {
                 throw new SQLException(e);
             }
         } else if (StringUtils.isBlank(t.getContraseña()) && StringUtils.isNotBlank(t.getFoto())) {
             try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_CONTRASEÑA_CON_IMAGEN_QUERY);) {
-            insert.setString(1, t.getFoto());
-            insert.setString(2, t.getNombre());
-            insert.setString(3, t.getTelefono());
-            insert.setString(4, t.getOrganizacion());
-            insert.setString(5, t.getEmail());
-            insert.setBoolean(6, t.getEstado());
-            insert.setString(7, t.getRol());
-            insert.setString(8, t.getDPI_o_Pasaporte());
-            insert.executeUpdate();
+                insert.setString(1, t.getFoto());
+                insert.setString(2, t.getNombre());
+                insert.setString(3, t.getTelefono());
+                insert.setString(4, t.getOrganizacion());
+                insert.setString(5, t.getEmail());
+                insert.setBoolean(6, t.getEstado());
+                insert.setString(7, t.getRol());
+                insert.setString(8, t.getDPI_o_Pasaporte());
+                insert.executeUpdate();
             } catch (SQLException e) {
                 throw new SQLException(e);
             }
         } else if (StringUtils.isNotBlank(t.getContraseña()) && StringUtils.isBlank(t.getFoto())) {
             try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_CON_CONTRASEÑA_SIN_IMAGEN_QUERY);) {
-            insert.setString(1, t.getNombre());
-            insert.setString(2, t.getTelefono());
-            insert.setString(3, t.getOrganizacion());
-            insert.setString(4, t.getEmail());
-            insert.setString(5, t.getContraseña());
-            insert.setBoolean(6, t.getEstado());
-            insert.setString(7, t.getRol());
-            insert.setString(8, t.getDPI_o_Pasaporte());
-            insert.executeUpdate();
+                insert.setString(1, t.getNombre());
+                insert.setString(2, t.getTelefono());
+                insert.setString(3, t.getOrganizacion());
+                insert.setString(4, t.getEmail());
+                insert.setString(5, t.getContraseña());
+                insert.setBoolean(6, t.getEstado());
+                insert.setString(7, t.getRol());
+                insert.setString(8, t.getDPI_o_Pasaporte());
+                insert.executeUpdate();
             } catch (SQLException e) {
                 throw new SQLException(e);
             }
         } else {
             try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_CON_CONTRASEÑA_CON_IMAGEN_QUERY);) {
-            insert.setString(1, t.getFoto());
-            insert.setString(2, t.getNombre());
-            insert.setString(3, t.getTelefono());
-            insert.setString(4, t.getOrganizacion());
-            insert.setString(5, t.getEmail());
-            insert.setString(6, t.getContraseña());
-            insert.setBoolean(7, t.getEstado());
-            insert.setString(8, t.getRol());
-            insert.setString(9, t.getDPI_o_Pasaporte());
-            insert.executeUpdate();
+                insert.setString(1, t.getFoto());
+                insert.setString(2, t.getNombre());
+                insert.setString(3, t.getTelefono());
+                insert.setString(4, t.getOrganizacion());
+                insert.setString(5, t.getEmail());
+                insert.setString(6, t.getContraseña());
+                insert.setBoolean(7, t.getEstado());
+                insert.setString(8, t.getRol());
+                insert.setString(9, t.getDPI_o_Pasaporte());
+                insert.executeUpdate();
             } catch (SQLException e) {
                 throw new SQLException(e);
             }
@@ -324,9 +328,9 @@ public class UsuarioDAO implements CRUD<Usuario> {
         } else if (existeTelefono(t)) {
             throw new ObjetoExistenteException(String.format("El Telefono '%s' ya esta asociado a otro usuario", t.getTelefono()));
         }
-        
-        if (t.getRol().equals("Administrador Congreso")){
-            if(!existeOrganizacion(t.getOrganizacion())){
+
+        if (t.getRol().equals("Administrador Congreso")) {
+            if (!existeOrganizacion(t.getOrganizacion())) {
                 throw new ObjetoExistenteException(String.format("La organizacion a la que quiere asociar "
                         + "al usuario: '%s' no existe", t.getOrganizacion()));
             }
@@ -353,7 +357,7 @@ public class UsuarioDAO implements CRUD<Usuario> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    private boolean existeOrganizacion(String organizacion) throws SQLException{
+    private boolean existeOrganizacion(String organizacion) throws SQLException {
         String query1 = "select * from Institucion where Nombre = ?";
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(query1)) {
@@ -365,4 +369,23 @@ public class UsuarioDAO implements CRUD<Usuario> {
         }
     }
 
+    public List<Usuario> filtrarPorAdminCongresoYSession(List<Usuario> usuario, String id, String organizacion) {
+        List<Usuario> usuarios = usuario;
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getDPI_o_Pasaporte().equals(id)
+                    || usuarios.get(i).getRol().equals("Administrador Sistema")) {
+                usuarios.remove(i);
+                i = 0;
+            }
+            if (usuario.get(i).getRol().equals("Administrador Congreso")
+                    && !usuario.get(i).getOrganizacion().toLowerCase().equalsIgnoreCase(organizacion.toLowerCase())) {
+                usuarios.remove(i);
+                i = 0;
+            }
+
+        }
+
+        return usuarios;
+    }
 }
