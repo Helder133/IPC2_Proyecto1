@@ -30,7 +30,7 @@
                     <form method="get" action="${pageContext.servletContext.contextPath}/ControllerCongreso" class="row g-2">
                         <div class="col-md-10 col-sm-8">
                             <input type="text" id="id" name="id" class="form-control bg-secondary text-light border-dark" 
-                                   placeholder="cunoc" required>
+                                   placeholder="Buscar Congreso por nombre" required>
                         </div>
                         <div class="col-md-2 col-sm-4">
                             <button type="submit" class="btn btn-primary w-100">
@@ -65,7 +65,7 @@
                                     <span class="fw-bold">Ubicación:</span> ${congreso.ubicacion} <br/>
                                     <span class="fw-bold">Precio:</span> ${congreso.precio}
                                 </p>
-                                <a href="${pageContext.servletContext.contextPath}/controllerUsuarioActualizarAC?id=${usuario.idCongreso}" 
+                                <a href="${pageContext.servletContext.contextPath}/ControllerCongresoActualizar?id=${congreso.idCongreso}" 
                                    class="btn btn-warning mt-auto">
                                     <i class="bi bi-pencil-square me-2"></i>Editar usuario
                                 </a>

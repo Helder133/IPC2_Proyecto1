@@ -19,7 +19,7 @@ import java.time.LocalDate;
  */
 public class ExtraccionDeDatosCongreso {
 
-    public Congreso extraerUsuarioFormulario(HttpServletRequest request, String id, String organizacion) throws IncompletoException,
+    public Congreso extraerCongresoFormulario(HttpServletRequest request, String id, String organizacion) throws IncompletoException,
             ObjetoExistenteException,
             NumberFormatException,
             SQLException {
@@ -31,13 +31,44 @@ public class ExtraccionDeDatosCongreso {
                 id,
                 request.getParameter("nombre"), // ruta de la foto
                 request.getParameter("descripcion"),
-                request.getParameter("ubicacion"),
+                institucion.getDireccion(),
                 precio,
                 request.getParameter("convocatoria").equals("Habilitado"),
                 LocalDate.parse(request.getParameter("fechaInicio")),
                 LocalDate.parse(request.getParameter("fechaFin")));
         
         congreso.setIdInstitucion(institucion.getId());
+        if (congreso.esValido()) {
+            throw new IncompletoException("Faltan datos, Vuelva a intentar");
+        } else if (congreso.esValidoLaFecha()) {
+            throw new IncompletoException("La fecha de fin no puede ser igual o anterior a la fecha de inicio");
+        }
+
+        return congreso;
+    }
+    
+    public Congreso extraerCongresoFormularioActualizar(HttpServletRequest request, String id, String organizacion) throws IncompletoException,
+            ObjetoExistenteException,
+            NumberFormatException,
+            SQLException {
+        BigDecimal precio = new BigDecimal(request.getParameter("precio"));
+        InstitucionDAO institucionDAO = new InstitucionDAO();
+        
+        Institucion institucion = institucionDAO.seleccionarPorParametro(organizacion);
+        Congreso congreso = new Congreso(
+                id,
+                request.getParameter("nombre"), // ruta de la foto
+                request.getParameter("descripcion"),
+                institucion.getDireccion(),
+                precio,
+                request.getParameter("convocatoria").equals("Habilitado"),
+                LocalDate.parse(request.getParameter("fechaInicio")),
+                LocalDate.parse(request.getParameter("fechaFin")));
+        
+        congreso.setIdInstitucion(institucion.getId());
+        int idCongreso = Integer.parseInt(request.getParameter("id"));
+        congreso.setIdCongreso(idCongreso);
+        
         if (congreso.esValido()) {
             throw new IncompletoException("Faltan datos, Vuelva a intentar");
         } else if (congreso.esValidoLaFecha()) {

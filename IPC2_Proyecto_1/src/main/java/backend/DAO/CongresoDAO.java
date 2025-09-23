@@ -12,9 +12,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +23,12 @@ public class CongresoDAO implements CRUD<Congreso>{
     private final static String INSETAR_CONGRESO = "INSERT INTO Congreso (Id_Usuario, Id_Institucion, Nombre, "
             + "Descripcion, Ubicacion, Precio, Convocatoria, Fecha_Inicio, Fecha_Fin) VALUES (?,?,?,?,?,?,?,?,?)";
     private final static String SELECT_POR_NOMBRE = "SELECT * FROM Congreso where Nombre = ?";
+    private final static String SELECT_POR_NOMBRE_A = "SELECT * FROM Congreso where Nombre = ? AND Id_Congreso <> ?";
     private final static String SELECT_TODO = "SELECT * FROM Congreso";
-    private final static String SELECT_POR_COINCIDENCIA_DE_NOMBRE = "SELECT * FROM Congreo where Nombre LIKE ?";
-    private static final String ACTUALIZAR_CONGRESO = "UPDATE Congreso SET Nombre = ?, Descripcion = ?, Ubicacion = ?, Precio = ?, Convocatoria = ?, Fecha_Inicio = ?, Fecha_Fin = ? Id_Congreso = ?";
+    private final static String SELECT_POR_COINCIDENCIA_DE_NOMBRE = "SELECT * FROM Congreso where Nombre LIKE ?";
+    private static final String ACTUALIZAR_CONGRESO = "UPDATE Congreso SET Nombre = ?, Descripcion = ?, Ubicacion = ?, Precio = ?, Convocatoria = ?, Fecha_Inicio = ?, Fecha_Fin = ? WHERE Id_Congreso = ?";
     private static final String ELIMINAR_CONGRESO = "DELETE FROM Congreso WHERE Id_Congreso = ?";
+    private final static String SELECT_POR_ID = "SELECT * FROM Congreso where Id_Congreso = ?";
     @Override
     public void insetar(Congreso t) throws SQLException, ObjetoExistenteException {
         if (existeNombre(t)) {
@@ -49,7 +48,6 @@ public class CongresoDAO implements CRUD<Congreso>{
 
             insert.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -88,7 +86,7 @@ public class CongresoDAO implements CRUD<Congreso>{
 
     @Override
     public void actualiza(Congreso t) throws SQLException, ObjetoExistenteException {
-        if (existeNombre(t)) {
+        if (existeNombreA(t)) {
             throw new ObjetoExistenteException("Ya exixte un congreso registrado con el nombre propuesto");
         }
         Connection connection = DBConnections.getInstance().getConnection();
@@ -167,13 +165,49 @@ public class CongresoDAO implements CRUD<Congreso>{
 
     @Override
     public Congreso seleccionarPorParametro(int t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(SELECT_POR_ID)) {
+            query.setInt(1, t);
+            ResultSet result = query.executeQuery();
+            while (result.next()) {
+                Congreso congreso = new Congreso(
+                        result.getString("Id_Usuario"),
+                        result.getString("Nombre"),
+                        result.getString("Descripcion"),
+                        result.getString("Ubicacion"),
+                        result.getBigDecimal("Precio"),
+                        result.getBoolean("Convocatoria"),
+                        result.getDate("Fecha_Inicio").toLocalDate(),
+                        result.getDate("Fecha_Fin").toLocalDate()
+                );
+
+                congreso.setIdCongreso(result.getInt("Id_Congreso"));
+                congreso.setIdInstitucion(result.getInt("Id_Institucion"));
+                
+                return congreso;
+            }
+            throw new SQLException("Error, no se puedo encontrar el congreso selecionado");
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
     private boolean existeNombre(Congreso t) throws SQLException{
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(SELECT_POR_NOMBRE)) {
             query.setString(1, t.getNombre());
+            ResultSet result = query.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    private boolean existeNombreA(Congreso t) throws SQLException{
+        Connection connection = DBConnections.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(SELECT_POR_NOMBRE_A)) {
+            query.setString(1, t.getNombre());
+            query.setInt(2, t.getIdCongreso());
             ResultSet result = query.executeQuery();
             return result.next();
         } catch (SQLException e) {
