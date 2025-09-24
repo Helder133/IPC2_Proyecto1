@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/controllerUsuarioAC" class="nav-link">Usuarios</a></li>
-                <li class="nav-item"><a class="nav-link">Salones</a></li>
+                <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/ControllerSalon" class="nav-link">Salones</a></li>
                 <li class="nav-item"><a href="${pageContext.servletContext.contextPath}/ControllerCongreso" class="nav-link">Congresos</a></li>
                 <li class="nav-item"><a class="nav-link">Comite Cientifico</a></li>
                 <li class="nav-item"><a class="nav-link">Actividades</a></li>

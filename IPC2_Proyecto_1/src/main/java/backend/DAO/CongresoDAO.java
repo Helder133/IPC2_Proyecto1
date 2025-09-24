@@ -32,7 +32,7 @@ public class CongresoDAO implements CRUD<Congreso>{
     @Override
     public void insetar(Congreso t) throws SQLException, ObjetoExistenteException {
         if (existeNombre(t)) {
-            throw new ObjetoExistenteException("Ya exixte un congreso registrado con el nombre propuesto");
+            throw new ObjetoExistenteException("Ya existe un congreso registrado con el nombre propuesto");
         }
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(INSETAR_CONGRESO)) {
@@ -87,7 +87,7 @@ public class CongresoDAO implements CRUD<Congreso>{
     @Override
     public void actualiza(Congreso t) throws SQLException, ObjetoExistenteException {
         if (existeNombreA(t)) {
-            throw new ObjetoExistenteException("Ya exixte un congreso registrado con el nombre propuesto");
+            throw new ObjetoExistenteException("Ya existe un congreso registrado con el nombre propuesto");
         }
         Connection connection = DBConnections.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_CONGRESO);) {

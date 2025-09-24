@@ -35,7 +35,7 @@ public class ExtraccionDeDatosCongreso {
         Institucion institucion = institucionDAO.seleccionarPorParametro(organizacion);
         Congreso congreso = new Congreso(
                 id,
-                request.getParameter("nombre"), // ruta de la foto
+                request.getParameter("nombre"),
                 request.getParameter("descripcion"),
                 institucion.getDireccion(),
                 precio,
@@ -63,7 +63,7 @@ public class ExtraccionDeDatosCongreso {
         Institucion institucion = institucionDAO.seleccionarPorParametro(organizacion);
         Congreso congreso = new Congreso(
                 id,
-                request.getParameter("nombre"), // ruta de la foto
+                request.getParameter("nombre"), 
                 request.getParameter("descripcion"),
                 institucion.getDireccion(),
                 precio,
