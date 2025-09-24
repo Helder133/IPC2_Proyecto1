@@ -50,7 +50,7 @@ public class ExtraccionDeDatosSalon {
         Institucion institucion = institucionDAO.seleccionarPorParametro(organizacion);
         Salon salon = new Salon(
                 request.getParameter("nombre"),
-                institucion.getId(), // ruta de la foto
+                institucion.getId(), 
                 request.getParameter("ubicacion"),
                 Integer.parseInt(request.getParameter("capacidad")));
         

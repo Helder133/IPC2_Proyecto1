@@ -23,10 +23,10 @@ public class SalonDAO implements CRUD<Salon> {
     private final static String INSERT_SALON = "INSERT INTO Salon (Nombre, Id_Institucion, Ubicacion, Capacidad) VALUES (?,?,?,?)";
     private final static String SELECT_TODOS_LOS_SALONES = "SELECT * FROM Salon";
     private static final String ACTUALIZAR_SALON = "UPDATE Salon SET Nombre = ?, Ubicacion = ?, Capacidad = ? WHERE Id_Salon = ?";
-    private final static String SELECT_POR_NOMBRE_A = "SELECT * FROM Salon where Nombre = ? AND Id_Congreso <> ?";
+    private final static String SELECT_POR_NOMBRE_A = "SELECT * FROM Salon where Nombre = ? AND Id_Salon <> ?";
     private final static String SELECT_POR_NOMBRE = "SELECT * FROM Salon where Nombre = ?";
     private final static String SELECT_POR_ID = "SELECT * FROM Salon WHERE Id_Salon = ?";
-    private static final String ELIMINAR_SALON = "DELETE FROM Salon WHERE Id_Congreso = ?";
+    private static final String ELIMINAR_SALON = "DELETE FROM Salon WHERE Id_Salon = ?";
     private static final String SELECT_POR_CAPACIDAD = "SELECT * FROM Salon WHERE Capacidad <= ?";
 
     @Override

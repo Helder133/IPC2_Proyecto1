@@ -63,12 +63,12 @@
                                     <span class="fw-bold">Ubicación:</span> ${salon.ubicacion} <br/>
                                     <span class="fw-bold">Capacidad:</span> ${salon.capacidad}
                                 </p>
-                                <a href="${pageContext.servletContext.contextPath}/ControllerCongresoActualizar?id=${congreso.idCongreso}" 
+                                <a href="${pageContext.servletContext.contextPath}/ControllerSalonActualizar?id=${salon.idSalon}" 
                                    class="btn btn-outline-warning mt-auto">
-                                    <i class="bi bi-pencil-square me-2"></i>Editar salon
+                                    <i class="bi bi-pencil-square me-2"></i>Editar Salon
                                 </a>
-                                <form method="post" action="${pageContext.servletContext.contextPath}/ControllerCongresoEliminar" enctype="multipart/form-data">
-                                    <input type="hidden" name="id" value="${congreso.idCongreso}" />
+                                <form method="post" action="${pageContext.servletContext.contextPath}/ControllerSalonEliminar" enctype="multipart/form-data">
+                                    <input type="hidden" id="id" name="id" value="${salon.idSalon}" />
                                     <button type="submit" class="btn btn-outline-danger mt-auto">
                                         <i class="bi bi-exclamation-triangle-fill"></i>Eliminar salon
                                     </button>
